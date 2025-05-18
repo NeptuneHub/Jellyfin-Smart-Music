@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ghcr.io/neptunehub/Jellyfin-Smart-Music:latest .
+        run: docker build -t ghcr.io/neptunehub/jellyfin-smart-music:latest .
 
       - name: Push Docker image
-        run: docker push ghcr.io/neptunehub/Jellyfin-Smart-Music:latest
+        run: docker push ghcr.io/neptunehub/jellyfin-smart-music:latest
