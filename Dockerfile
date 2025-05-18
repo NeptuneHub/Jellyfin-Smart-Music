@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
     libeigen3-dev \
     libprotobuf-dev \
     protobuf-compiler \
-    libtensorflow-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set python3.11 as default
