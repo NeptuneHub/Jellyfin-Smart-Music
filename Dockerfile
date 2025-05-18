@@ -35,13 +35,12 @@ WORKDIR /opt
 # Clone essentia source
 RUN git clone https://github.com/MTG/essentia.git --recursive
 
-# Compile essentia with TensorFlow support
+# Compile essentia WITHOUT C++ TensorFlow (we use Python extractors only)
 WORKDIR /opt/essentia/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=OFF \
     -DBUILD_PYTHON_BINDINGS=ON \
     -DPYTHON_EXECUTABLE=/usr/bin/python3.11 \
-    -DBUILD_TENSORFLOW_EXTRACTORS=ON \
     -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3
 RUN make -j$(nproc)
 RUN make install && ldconfig
