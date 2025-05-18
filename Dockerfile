@@ -33,12 +33,12 @@ RUN /opt/venv/bin/pip install --upgrade pip
 RUN /opt/venv/bin/pip install numpy scipy requests scikit-learn tensorflow==2.15.0
 
 # Clone Essentia repo
-RUN git clone https://github.com/MTG/essentia.git --recursive
+RUN git clone --recursive https://github.com/MTG/essentia.git /opt/essentia
+
+# Create build directory inside essentia repo
+RUN mkdir -p /opt/essentia/build
 
 # Build Essentia with Python bindings & TensorFlow extractors using venv python
-WORKDIR /opt/essentia
-RUN mkdir -p build
-
 WORKDIR /opt/essentia/build
 RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_SHARED_LIBS=OFF \
