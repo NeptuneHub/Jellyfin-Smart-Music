@@ -1,6 +1,5 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-# Set non-interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install system dependencies
@@ -27,6 +26,10 @@ RUN apt-get update && apt-get install -y \
     libtensorflow-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Set python3.11 as default
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+
 # Create a working directory
 WORKDIR /opt
 
@@ -47,7 +50,7 @@ RUN make install && ldconfig
 # Install Python dependencies
 WORKDIR /opt
 RUN python3.11 -m pip install --upgrade pip
-RUN python3.11 -m pip install numpy scipy requests sklearn tensorflow==2.15.0
+RUN python3.11 -m pip install numpy scipy requests scikit-learn tensorflow==2.15.0
 
 # Clone your Jellyfin-Essentia-Playlist repo
 WORKDIR /workspace
