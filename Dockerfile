@@ -10,9 +10,9 @@ RUN apt-get update \
        vim git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install TensorFlow
+# Upgrade pip and install Python packages (TensorFlow, requests, sklearn, etc.)
 RUN python3 -m pip install --upgrade pip setuptools \
-    && pip3 install --no-cache-dir tensorflow==1.15.0
+    && pip3 install --no-cache-dir tensorflow==1.15.0 requests scikit-learn numpy
 
 # Build and install Essentia
 RUN apt-get update \
