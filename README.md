@@ -26,24 +26,6 @@ This image is a **Minimum Viable Product (MVP)** designed for development and te
 
 ---
 
-## 🚀 Future Possibilities
-
-This MVP lays the groundwork for more advanced features:
-
-1. **💡 Integration into Existing Players**  
-   Embed smart playlist generation into open-source music apps (e.g., Jellyfin plugins, Kodi, Navidrome, etc.).
-
-2. **⚙️ Background Automation**  
-   Turn the script into a long-running background worker that automatically generates playlists on a schedule.
-
-3. **🖥️ Web UI or Plugin**  
-   Add controls for clustering, filtering, or playlist regeneration directly inside the Jellyfin UI.
-
-4. **🔁 Cross-Platform Playlist Export**  
-   Support exporting playlists in formats like `.m3u` or syncing them across services.
-
----
-
 ## 🐳  Quick Start (via K3s Deployment)
 If you're running a K3s or Kubernetes environment, you can deploy Jellyfin-Smart-Music with a simple manifest:
 
@@ -99,3 +81,21 @@ cd /workspace
 python3 audio_jelly.py
 ```
 🧪 This is a dev-focused container, so you can tweak the script and rerun it easily.
+
+---
+
+## 🚀 Future Possibilities
+
+This MVP lays the groundwork for more advanced features:
+
+1. **💡 Integration into Existing Players**  
+   Embed smart playlist generation into open-source music apps (e.g., Jellyfin plugins, Kodi, Navidrome, etc.).
+
+2. **⚙️ Background Automation**  
+   Turn the script into a long-running background worker that automatically generates playlists on a schedule.
+
+3. **🖥️ Web UI or Plugin**  
+   Add controls for clustering, filtering, or playlist regeneration directly inside the Jellyfin UI.
+
+4. **🔁 Cross-Platform Playlist Export**  
+   Support exporting playlists in formats like `.m3u` or syncing them across services.
