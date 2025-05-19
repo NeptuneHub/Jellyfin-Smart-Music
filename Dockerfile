@@ -25,7 +25,7 @@ RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git /work
 # Download the correct Essentia mood/theme model
 RUN mkdir -p /models && \
     wget -O /models/mtg_jamendo_moodtheme-discogs-effnet-1.pb \
-    https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.pb
+    https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb
 
 # Set environment variable for Essentia to find the model
 ENV ESSENTIA_MODELS_DIR=/models
