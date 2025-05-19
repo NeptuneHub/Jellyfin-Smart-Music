@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 ENV LANG C.UTF-8
 
-# Install essentials, Python deps, and Vim
+# Install system dependencies, Python, Vim, and Git
 RUN apt-get update \
     && apt-get install -y build-essential python3-dev python3-pip python3-numpy-dev python3-six \
        libfftw3-3 libyaml-0-2 libtag1v5 libsamplerate0 python3-yaml \
@@ -14,7 +14,7 @@ RUN apt-get update \
 RUN python3 -m pip install --upgrade pip setuptools \
     && pip3 install --no-cache-dir tensorflow==1.15.0
 
-# Build Essentia from source
+# Build and install Essentia
 RUN apt-get update \
     && apt-get install -y build-essential python3-dev \
        libfftw3-dev libavcodec-dev libavformat-dev libavresample-dev \
@@ -33,10 +33,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && cd / && rm -rf /essentia/essentia
 
-# Clone your Jellyfin-Essentia-Playlist repo
+# Clone your playlist repo
 RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git /workspace
 
+# Set PYTHONPATH and working directory
 ENV PYTHONPATH /usr/local/lib/python3/dist-packages
-
-# Set working directory inside your cloned repo
 WORKDIR /workspace
+
+# Prevent the container from exiting immediately
+CMD ["tail", "-f", "/dev/null"]
