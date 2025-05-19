@@ -1,62 +1,37 @@
-FROM debian:bookworm
+FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG C.UTF-8
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    git \
-    wget \
-    vim \
-    python3.11 \
-    python3.11-venv \
-    python3.11-dev \
-    libfftw3-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libavutil-dev \
-    libsamplerate0-dev \
-    libtag1-dev \
-    libyaml-dev \
-    libeigen3-dev \
-    libprotobuf-dev \
-    protobuf-compiler \
+RUN apt-get update \
+    && apt-get install -y build-essential python3-dev python3-pip python3-numpy-dev python3-six \
+       libfftw3-3 libyaml-0-2 libtag1v5 libsamplerate0 python3-yaml \
+       libavcodec57 libavformat57 libavutil55 libavresample3 wget pkg-config libeigen3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Create and activate a virtual environment for python packages
-WORKDIR /opt
-RUN python3.11 -m venv venv
+RUN python3 -m pip install --upgrade pip setuptools \
+    && pip3 install --no-cache-dir tensorflow==1.15.0
 
-# Upgrade pip and install python packages inside the venv
-RUN /opt/venv/bin/pip install --upgrade pip
-RUN /opt/venv/bin/pip install numpy scipy requests scikit-learn tensorflow==2.15.0
+RUN apt-get update \
+    && apt-get install -y build-essential python3-dev git \
+       libfftw3-dev libavcodec-dev libavformat-dev libavresample-dev \
+       libsamplerate0-dev libtag1-dev libyaml-dev \
+    && mkdir /essentia && mkdir -p /usr/local/lib/pkgconfig \
+    && cd /essentia && git clone https://github.com/MTG/essentia.git \
+    && cd /essentia/essentia && src/3rdparty/tensorflow/setup_from_python.sh \
+    \
+    # patch as discussed in https://github.com/MTG/essentia-docker/pull/7#discussion_r380782792
+    && echo "Requires: python3" >> /usr/local/lib/pkgconfig/tensorflow.pc \
+    \
+    && python3 waf configure --build-static --with-python --with-examples --with-vamp --with-tensorflow \
+    && python3 waf && python3 waf install && ldconfig \
+    && apt-get remove -y build-essential libyaml-dev libfftw3-dev libavcodec-dev \
+       libavformat-dev libavutil-dev libavresample-dev libsamplerate0-dev \
+      libtag1-dev python3-numpy-dev \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && cd / && rm -rf /essentia/essentia
 
-# Clone Essentia repo
-RUN git clone --recursive https://github.com/MTG/essentia.git /opt/essentia
+ENV PYTHONPATH /usr/local/lib/python3/dist-packages
 
-# Create build directory inside essentia repo
-RUN mkdir -p /opt/essentia/build
-
-# Build Essentia with Python bindings & TensorFlow extractors using venv python
-WORKDIR /opt/essentia/build
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DBUILD_PYTHON_BINDINGS=ON \
-    -DPYTHON_EXECUTABLE=/opt/venv/bin/python \
-    -DBUILD_TENSORFLOW_EXTRACTORS=ON \
-    -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3
-
-RUN make -j$(nproc)
-RUN make install && ldconfig
-
-# Clone Jellyfin-Essentia-Playlist repo
-WORKDIR /workspace
-RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git
-
-WORKDIR /workspace/Jellyfin-Essentia-Playlist
-
-# Activate the virtual environment by default on container start
-ENV PATH="/opt/venv/bin:$PATH"
-
-CMD ["/bin/bash"]
+WORKDIR /essentia
