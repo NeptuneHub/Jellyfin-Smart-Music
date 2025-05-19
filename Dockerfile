@@ -10,26 +10,28 @@ RUN apt-get update && apt-get install -y \
     ffmpeg wget git vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python packages with specific numpy version
+# Install Python packages with compatible numpy for essentia-tensorflow
 RUN pip3 install --no-cache-dir \
-    numpy==1.23.5 \
+    numpy==1.21.6 \
     essentia-tensorflow \
     requests \
     scikit-learn \
     pyyaml \
     six
 
-# Create models directory and download the correct model
-RUN mkdir -p /models && \
-    wget -O /models/music_mood_tempo-effnet-bs64-1.pb \
-    https://essentia.upf.edu/models/classification-head/music_mood_tempo-effnet-bs64-1.pb
-
 # Clone your Jellyfin playlist project
 RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git /workspace
 
-# Set PYTHONPATH to ensure Python finds Essentia
-ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
+# Download the correct Essentia mood/theme model
+RUN mkdir -p /models && \
+    wget -O /models/mtg_jamendo_moodtheme-discogs-effnet-1.pb \
+    https://essentia.upf.edu/models/classification-heads/mtg_jamendo_moodtheme/mtg_jamendo_moodtheme-discogs-effnet-1.pb
+
+# Set environment variable for Essentia to find the model
 ENV ESSENTIA_MODELS_DIR=/models
 
-# Default command (for testing: keep container alive)
+# Set PYTHONPATH to ensure Python finds Essentia
+ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
+
+# Default command (for testing/debugging)
 CMD ["tail", "-f", "/dev/null"]
