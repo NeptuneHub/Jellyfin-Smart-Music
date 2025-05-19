@@ -4,15 +4,12 @@
 
 This project packages all required dependencies into a container and runs the [`Jellyfin-Essentia-Playlist`](https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist) script, which analyzes your Jellyfin music library and builds playlists based on tempo, key, energy, and more.
 
----
-
 ## 🧭 Project Overview
 * 🔍 Uses **Essentia** + **TensorFlow 1.15** for music feature extraction.
 *  📂 Clones and runs `Jellyfin-Essentia-Playlist`, a custom Python-based analysis tool.
 *  ✅ All dependencies are pre-installed — no system setup required.
 *  🛠️ Intended as a **DEV environment** for manual analysis and experimentation.
 
----
 
 ## 🏗️ Status: Development Environment / MVP
 
@@ -24,7 +21,6 @@ This image is a **Minimum Viable Product (MVP)** designed for development and te
 * Enables quick script iteration.
 * Makes Essentia+TensorFlow accessible in one `docker run`.
 
----
 
 ## 🐳  Quick Start (via K3s Deployment)
 If you're running a K3s or Kubernetes environment, you can deploy Jellyfin-Smart-Music with a simple manifest:
@@ -81,8 +77,6 @@ cd /workspace
 python3 audio_jelly.py
 ```
 🧪 This is a dev-focused container, so you can tweak the script and rerun it easily.
-
----
 
 ## 🚀 Future Possibilities
 
