@@ -89,7 +89,7 @@ This MVP lays the groundwork for more advanced features:
    Turn the script into a long-running background worker that automatically generates playlists on a schedule.
 
 3. **🖥️ Web UI or Plugin**  
-   Add controls for clustering, filtering, or playlist regeneration directly inside the Jellyfin UI.
+   Add controls for clustering, filtering, or playlist regeneration directly inside the Jellyfin music clients
 
 4. **🔁 Cross-Platform Playlist Export**  
    Support exporting playlists in formats like `.m3u` or syncing them across services.
