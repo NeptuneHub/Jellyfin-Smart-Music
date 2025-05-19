@@ -7,11 +7,10 @@ This project packages all required dependencies into a container and runs the [`
 ---
 
 ## 🧭 Project Overview
-
-- 🔍 Uses **Essentia** + **TensorFlow 1.15** for music feature extraction.
-- 📂 Clones and runs `Jellyfin-Essentia-Playlist`, a custom Python-based analysis tool.
-- ✅ All dependencies are pre-installed — no system setup required.
-- 🛠️ Intended as a **DEV environment** for manual analysis and experimentation.
+* 🔍 Uses **Essentia** + **TensorFlow 1.15** for music feature extraction.
+*  📂 Clones and runs `Jellyfin-Essentia-Playlist`, a custom Python-based analysis tool.
+*  ✅ All dependencies are pre-installed — no system setup required.
+*  🛠️ Intended as a **DEV environment** for manual analysis and experimentation.
 
 ---
 
@@ -21,9 +20,9 @@ This image is a **Minimum Viable Product (MVP)** designed for development and te
 
 ### Why This Matters
 
-- Saves hours of dependency resolution.
-- Enables quick script iteration.
-- Makes Essentia+TensorFlow accessible in one `docker run`.
+* Saves hours of dependency resolution.
+* Enables quick script iteration.
+* Makes Essentia+TensorFlow accessible in one `docker run`.
 
 ---
 
@@ -50,9 +49,9 @@ If you're running a K3s or Kubernetes environment, you can deploy Jellyfin-Smart
 
 ### Prerequisites
 
-- K3S running
-- A running Jellyfin server
-- Set up your config.py inside the container (or mount it as a volume) with your Jellyfin API token and user ID
+* K3S running
+* A running Jellyfin server
+* Set up your config.py inside the container (or mount it as a volume) with your Jellyfin API token and user ID
 
 ### 🛠️ Installation Manifest
 
