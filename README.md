@@ -89,7 +89,7 @@ python3 audio_jelly.py
 This MVP lays the groundwork for more advanced features:
 
 1. **💡 Integration into Existing Players**  
-   Embed smart playlist generation into open-source music apps (e.g., Jellyfin plugins, Kodi, Navidrome, etc.).
+   Embed smart playlist generation into open-source music clients for Jellyfin
 
 2. **⚙️ Background Automation**  
    Turn the script into a long-running background worker that automatically generates playlists on a schedule.
