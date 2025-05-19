@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libavutil55 \
     libavresample3 \
     wget \
+    curl \
     pkg-config \
     libeigen3-dev \
     vim \
@@ -74,7 +75,8 @@ RUN apt-get remove -y \
 
 # Download pretrained TensorFlow mood model used by Essentia
 RUN mkdir -p /models \
-    && wget -O /models/music_mood_tempo-effnet-bs64-1.pb \
+    && curl --fail --show-error --location \
+       -o /models/music_mood_tempo-effnet-bs64-1.pb \
        https://essentia.upf.edu/models/classifiers/music/music_mood_tempo-effnet-bs64-1.pb
 
 # Set environment variable so Essentia can find the model
