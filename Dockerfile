@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
+
 WORKDIR /workspace
 
 # Install system packages
@@ -8,11 +9,11 @@ RUN apt-get update && apt-get install -y \
     python3 python3-pip python3-dev \
     build-essential \
     libfftw3-3 libyaml-0-2 libtag1v5 libsamplerate0 \
-    ffmpeg libavcodec58 libavformat58 libavutil56 libavresample4 \
+    ffmpeg libavcodec-dev libavformat-dev libavutil-dev libavresample-dev \
     wget git vim pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# Install essentia-tensorflow and other required Python packages
+# Upgrade pip and install Python packages
 RUN pip3 install --no-cache-dir \
     essentia-tensorflow \
     requests \
@@ -21,11 +22,11 @@ RUN pip3 install --no-cache-dir \
     pyyaml \
     six
 
-# Clone the Jellyfin-Essentia-Playlist project
+# Clone your Jellyfin Essentia Playlist project
 RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git /workspace
 
-# Set Python path for Essentia
+# Set PYTHONPATH so Essentia is discoverable
 ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
 
-# Run the container indefinitely by default
+# Default command to keep container running
 CMD ["tail", "-f", "/dev/null"]
