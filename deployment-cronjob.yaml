@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jellyfin-smart-music-daily
+  namespace: playlist
+spec:
+  # ─── Schedule: every day at 23:00 (server time) ───
+  schedule: "0 23 * * *"
+  # Keep a few Job history records if you want to inspect past runs
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: jellyfin-smart-music
+        spec:
+          # ─── Force this Pod onto node "ubuntu3" ───
+          nodeSelector:
+            kubernetes.io/hostname: ubuntu3
+
+          # ─── Run as root so we can read/write under /workspace ───
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
+
+          containers:
+          - name: jellyfin-smart-music
+            image: ghcr.io/neptunehub/jellyfin-smart-music:latest-cronjob
+            imagePullPolicy: Always
+
+            # The cronjob image’s Dockerfile.cronjob already sets:
+            #   CMD ["python3", "-u", "/app/audio_jelly_tensorflow.py"]
+            # So no need to override `command:` here. It will run once and exit.
+
+            volumeMounts:
+            - name: workspace-volume
+              mountPath: /workspace
+
+          restartPolicy: OnFailure
+
+          volumes:
+          - name: workspace-volume
+            hostPath:
+              path: /mnt/workspace
+              type: DirectoryOrCreate
