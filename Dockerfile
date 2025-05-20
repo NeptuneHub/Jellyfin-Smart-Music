@@ -41,4 +41,4 @@ ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
 WORKDIR /workspace
 
 # 8) Run the main script from /app, then stay alive
-CMD ["sh", "-c", "python3 /app/audio_jelly_tensorflow.py || true && tail -f /dev/null"]
+CMD ["sh", "-c", "python3 -u audio_jelly_tensorflow.py || true && tail -f /dev/null"]
