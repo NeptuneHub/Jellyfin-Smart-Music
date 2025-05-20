@@ -20,10 +20,12 @@ spec:
       labels:
         app: jellyfin-smart-music
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: ubuntu3
       securityContext:
-        runAsUser: 0          # Run all containers in pod as UID 1000
-        runAsGroup: 0         # Run all containers in pod as GID 1000
-        fsGroup: 0            # Files created will belong to this group (important for mounted volumes)
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
       containers:
       - name: jellyfin-smart-music
         image: ghcr.io/neptunehub/jellyfin-smart-music:latest
