@@ -1,4 +1,5 @@
-name: Build and Push Docker Image
+# .github/workflows/docker-build.yml
+name: Build and Push Docker Images
 
 on:
   push:
@@ -25,11 +26,26 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}  # Use GITHUB_TOKEN unless you need fine-grained PAT
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      # ────────────────────────────────────────────────────────────────────
+      # 1) Build & push the "always-on" image
+      - name: Build & Push "always-on" image
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile.alwayson
           push: true
-          tags: ghcr.io/neptunehub/jellyfin-smart-music:latest
+          tags: |
+            ghcr.io/neptunehub/jellyfin-smart-music:latest-alwayson
+
+      # ────────────────────────────────────────────────────────────────────
+      # 2) Build & push the "cronjob" image
+      - name: Build & Push "cronjob" image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.cronjob
+          push: true
+          tags: |
+            ghcr.io/neptunehub/jellyfin-smart-music:latest-cronjob
