@@ -19,19 +19,17 @@ RUN pip3 install --no-cache-dir \
     pyyaml \
     six
 
-# Clone your Jellyfin playlist project
+# Clone the Jellyfin-Essentia-Playlist project
 RUN git clone https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist.git /workspace
 
-# Download the correct Essentia mood/theme model
+# Download the Essentia mood/theme model
 RUN mkdir -p /models && \
     wget -O /models/discogs-effnet-bs64-1.pb \
     https://essentia.upf.edu/models/music-style-classification/discogs-effnet/discogs-effnet-bs64-1.pb
 
-# Set environment variable for Essentia to find the model
+# Set environment variables for Essentia
 ENV ESSENTIA_MODELS_DIR=/models
-
-# Set PYTHONPATH to ensure Python finds Essentia
 ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
 
-# Default command (for testing/debugging)
-CMD ["tail", "-f", "/dev/null"]
+# Run the main script and keep container alive after it finishes
+CMD ["sh", "-c", "python3 audio_jelly_tensorflow.py && tail -f /dev/null"]
