@@ -4,63 +4,104 @@
 
 This project packages all required dependencies into a container and runs the [`Jellyfin-Essentia-Playlist`](https://github.com/NeptuneHub/Jellyfin-Essentia-Playlist) script, which analyzes your Jellyfin music library and builds playlists based on tempo, key, energy, and more.
 
+## 🎶 Jellyfin-Smart-Music
+Jellyfin-Smart-Music is a Dockerized environment that brings smart playlist generation to Jellyfin using deep audio analysis via Essentia and TensorFlow.
+
+This project packages all required dependencies into a container and runs the Jellyfin-Essentia-Playlist script, which analyzes your Jellyfin music library and builds playlists based on tempo, key, energy, and more.
+
 ## 🧭 Project Overview
-* 🔍 Uses **Essentia** + **TensorFlow 1.15** for music feature extraction.
-*  📂 Clones and runs `Jellyfin-Essentia-Playlist`, a custom Python-based analysis tool.
-*  ✅ All dependencies are pre-installed — no system setup required.
-*  🛠️ Intended as a **DEV environment** for manual analysis and experimentation.
+* 🔍 Uses Essentia + TensorFlow 1.15 for audio feature extraction
+* 📂 Runs the Jellyfin-Essentia-Playlist Python tool for smart playlist generation
+* ✅ All dependencies are bundled — no manual setup needed
+* 🛠️ Two runtime options:
+* * Always-On Deployment: Ideal for development or interactive use
+* * Scheduled CronJob: Runs automatically once daily
 
-## 🏗️ Status: Development Environment / MVP
+🏗️ Status: Development / MVP
+This is a Minimum Viable Product (MVP), perfect for development, testing, and experimentation.
 
-This image is a **Minimum Viable Product (MVP)** designed for development and testing. You can run and edit the script interactively inside the container without needing to manage complex build chains or library dependencies.
+Why this setup?
 
-### Why This Matters
+🕒 Saves hours of dependency wrangling
 
-* Saves hours of dependency resolution.
-* Enables quick script iteration.
-* Makes Essentia+TensorFlow accessible in one `docker run`.
+⚡ Enables rapid iteration and tweaking
 
+🎛️ Makes deep audio analysis available in one kubectl apply
 
-## 🐳  Quick Start (via K3s Deployment)
-If you're running a K3s or Kubernetes environment, you can deploy Jellyfin-Smart-Music with a simple manifest:
+🐳 Quick Start (K3s / Kubernetes)
+✅ Prerequisites
+A running K3s or Kubernetes cluster
 
-### Prerequisites
+A working Jellyfin server
 
-* K3S running
-* A running Jellyfin server
-* Set up your config.py inside the container (or mount it as a volume) with your Jellyfin API token and user ID
+kubectl access to deploy manifests
 
-### 🛠️ Installation Manifest
-We provide two Kubernetes manifests and corresponding image tags:
+Mount a workspace volume for persistence
 
-Always-On (alwayson-namespace-deployment.yaml + :latest-alwayson):
-Runs continuously (ideal for dev/interactive use).
+Supply your Jellyfin API credentials via config (see below)
 
-CronJob (cronjob-namespace-cronjob.yaml + :latest-cronjob):
-Executes once daily at 11 PM.
+📦 Deployment Modes
+We provide two manifests and corresponding Docker image tags:
 
-💡 Note1: Mount /workspace and set your Jellyfin ENV vars/API keys as needed.
-💡 Note2: You may want to mount volumes and set environment variables for Jellyfin access (API keys, etc.), depending on how you plan to run the script.
+🌀 1. Always-On Deployment
+File: alwayson-deployment.yaml
 
-### 🔧 Running the Script Alwayson
-Script **audio_jelly_tensorflow.py** start at the container creation in the alwayson, and at 11:00 PM for the CronJob.
+Image: ghcr.io/neptunehub/jellyfin-smart-music:latest-alwayson
 
-**THIS PART IS UNDER CONSTRUCTION:** The python parameter are actually in **config.py** that is embeded in the container. I need to enable the container to get them as a configuration in the manifest.
+Runs continuously in the background
 
-🧪 This is a dev-focused container, so you can tweak the script and rerun it easily.
+Best for manual, interactive, or dev-focused workflows
 
-## 🚀 Future Possibilities
+🕒 2. Scheduled CronJob
+File: cronjob-deployment.yaml
 
-This MVP lays the groundwork for more advanced features:
+Image: ghcr.io/neptunehub/jellyfin-smart-music:latest-cronjob
 
-1. **💡 Integration into Existing Players**  
-   Embed smart playlist generation into open-source music clients for Jellyfin
+Runs once daily at 23:00 (11 PM)
 
-2. **⚙️ Background Automation**  
-   Turn the script into a long-running background worker that automatically generates playlists on a schedule.
+Ideal for unattended playlist regeneration
 
-3. **🖥️ Web UI or Plugin**  
-   Add controls for clustering, filtering, or playlist regeneration directly inside the Jellyfin music clients
+⚙️ Configuration via ConfigMap
+You do not need to modify the container image to pass your Jellyfin credentials and clustering settings.
 
-4. **🔁 Cross-Platform Playlist Export**  
-   Support exporting playlists in formats like `.m3u` or syncing them across services.
+All key parameters (like user ID, token, algorithm choice) are now injected via a Kubernetes ConfigMap, replacing the default config.py.
+
+✅ This makes the container portable and user-configurable.
+
+🧪 How the Script Runs
+In Always-On mode, the script audio_jelly_tensorflow.py runs automatically on container start.
+
+In CronJob mode, it executes once daily at the scheduled time.
+
+You can still kubectl exec into the container to run or modify the script manually.
+
+💡 Notes
+Don't forget to mount the /workspace volume if you want to persist analysis results or the SQLite database.
+
+Your actual credentials and analysis behavior are defined in the config.py injected via the ConfigMap.
+
+Example volume mount:
+
+yaml
+Copia
+Modifica
+volumeMounts:
+  - name: workspace-volume
+    mountPath: /workspace
+🚀 Future Possibilities
+This MVP lays the groundwork for further development:
+
+💡 Integration into Music Clients
+Native support in Jellyfin apps for smart playlists
+
+⚙️ Continuous Automation
+Full background worker support and schedule customization
+
+🖥️ Web UI or Plugin
+Web-based controls for playlist logic and filters
+
+🔁 Cross-Platform Sync
+Export playlists to .m3u or sync to external platforms
+
+Happy playlisting 🎧
+Pull requests and suggestions welcome!
