@@ -28,7 +28,7 @@ spec:
         fsGroup: 0
       containers:
       - name: jellyfin-smart-music
-        image: ghcr.io/neptunehub/jellyfin-smart-music:latest
+        image: ghcr.io/neptunehub/jellyfin-smart-music:latest-alwayson
         imagePullPolicy: Always
         ports:
         - containerPort: 8096
