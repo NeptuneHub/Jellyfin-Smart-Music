@@ -31,38 +31,16 @@ If you're running a K3s or Kubernetes environment, you can deploy Jellyfin-Smart
 * Set up your config.py inside the container (or mount it as a volume) with your Jellyfin API token and user ID
 
 ### 🛠️ Installation Manifest
+We provide two Kubernetes manifests and corresponding image tags:
 
-```bash
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: playlist
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jellyfin-smart-music
-  namespace: playlist
-  labels:
-    app: jellyfin-smart-music
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: jellyfin-smart-music
-  template:
-    metadata:
-      labels:
-        app: jellyfin-smart-music
-    spec:
-      containers:
-      - name: jellyfin-smart-music
-        image: ghcr.io/neptunehub/jellyfin-smart-music:latest
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 8096
-```
-💡 Note: You may want to mount volumes and set environment variables for Jellyfin access (API keys, etc.), depending on how you plan to run the script.
+Always-On (alwayson-namespace-deployment.yaml + :latest-alwayson):
+Runs continuously (ideal for dev/interactive use).
+
+CronJob (cronjob-namespace-cronjob.yaml + :latest-cronjob):
+Executes once daily at 11 PM.
+
+💡 Note1: Mount /workspace and set your Jellyfin ENV vars/API keys as needed.
+💡 Note2: You may want to mount volumes and set environment variables for Jellyfin access (API keys, etc.), depending on how you plan to run the script.
 
 ### 🔧 Running the Script
 Once deployed, you can exec into the container:
