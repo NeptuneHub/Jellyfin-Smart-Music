@@ -32,4 +32,4 @@ ENV ESSENTIA_MODELS_DIR=/models
 ENV PYTHONPATH=/usr/local/lib/python3/dist-packages
 
 # Run the main script and keep container alive after it finishes
-CMD ["sh", "-c", "python3 audio_jelly_tensorflow.py && tail -f /dev/null"]
+CMD ["sh", "-c", "python3 audio_jelly_tensorflow.py || true && tail -f /dev/null"]
