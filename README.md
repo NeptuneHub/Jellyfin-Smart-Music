@@ -42,17 +42,11 @@ Executes once daily at 11 PM.
 💡 Note1: Mount /workspace and set your Jellyfin ENV vars/API keys as needed.
 💡 Note2: You may want to mount volumes and set environment variables for Jellyfin access (API keys, etc.), depending on how you plan to run the script.
 
-### 🔧 Running the Script
-Once deployed, you can exec into the container:
+### 🔧 Running the Script Alwayson
+Script **audio_jelly_tensorflow.py** start at the container creation in the alwayson, and at 11:00 PM for the CronJob.
 
-```bash
-kubectl exec -n playlist -it deploy/jellyfin-smart-music -- bash
-```
-Then run the script manually:
-```bash
-cd /workspace
-python3 audio_jelly.py
-```
+**THIS PART IS UNDER CONSTRUCTION:** The python parameter are actually in **config.py** that is embeded in the container. I need to enable the container to get them as a configuration in the manifest.
+
 🧪 This is a dev-focused container, so you can tweak the script and rerun it easily.
 
 ## 🚀 Future Possibilities
