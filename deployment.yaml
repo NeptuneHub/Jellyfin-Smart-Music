@@ -3,6 +3,39 @@ kind: Namespace
 metadata:
   name: playlist
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jellyfin-smart-music-config
+  namespace: playlist
+data:
+  config.py: |
+    #Jellyfin and db constants (overrides the one in the image)
+    JELLYFIN_USER_ID = "0e45c44b3e2e4da7a2be11a72a1c8575"
+    JELLYFIN_URL     = "http://jellyfin.192.168.3.131.nip.io:8087"
+    JELLYFIN_TOKEN   = "e0b8c325bc1b426c81922b90c0aa2ff1"
+    TEMP_DIR         = "/workspace/temp_audio"
+    DB_PATH          = "/workspace/db.sqlite"
+
+    HEADERS = {"X-Emby-Token": JELLYFIN_TOKEN}
+
+    # General constants
+    MAX_DISTANCE            = 0.5
+    MAX_SONGS_PER_CLUSTER   = 40
+    MAX_SONGS_PER_ARTIST    = 3
+    NUM_RECENT_ALBUMS       = 1100
+
+    # Algorithm choice
+    CLUSTER_ALGORITHM = "kmeans"  # accepted: "dbscan" or "kmeans"
+    PCA_ENABLED       = True      # Set False to disable PCA
+
+    # DBSCAN-only constants
+    DBSCAN_EPS         = 0.15
+    DBSCAN_MIN_SAMPLES = 3
+
+    # KMeans-only constant
+    NUM_CLUSTERS       = 10       # if 0, auto‐compute
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,8 +73,17 @@ spec:
         volumeMounts:
         - name: workspace-volume
           mountPath: /workspace
+        - name: config-volume
+          mountPath: /app/config.py
+          subPath: config.py
       volumes:
       - name: workspace-volume
         hostPath:
           path: /mnt/workspace
           type: DirectoryOrCreate
+      - name: config-volume
+        configMap:
+          name: jellyfin-smart-music-config
+          items:
+            - key: config.py
+              path: config.py
