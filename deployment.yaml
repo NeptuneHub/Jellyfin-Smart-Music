@@ -20,12 +20,21 @@ spec:
       labels:
         app: jellyfin-smart-music
     spec:
+      securityContext:
+        runAsUser: 0          # Run all containers in pod as UID 1000
+        runAsGroup: 0         # Run all containers in pod as GID 1000
+        fsGroup: 0            # Files created will belong to this group (important for mounted volumes)
       containers:
       - name: jellyfin-smart-music
         image: ghcr.io/neptunehub/jellyfin-smart-music:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8096
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
         volumeMounts:
         - name: workspace-volume
           mountPath: /workspace
