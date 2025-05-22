@@ -1,3 +1,5 @@
+**IMPORTANT:** This is an EXPERIMENTAL open-source project I’m developing just for fun. All the source code is fully open and visible. It’s intended only for testing purpose, not for production environments. Please use it at your own risk. I cannot be held responsible for any issues or damages that may occur.
+
 # 🎶 Jellyfin-Smart-Music
 
 **Jellyfin-Smart-Music** is a Dockerized environment that brings smart playlist generation to [Jellyfin](https://jellyfin.org) using deep audio analysis via [Essentia](https://essentia.upf.edu/) with TensorFlow.
