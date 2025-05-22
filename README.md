@@ -38,13 +38,13 @@ We provide two manifests and corresponding Docker image tags:
 
 🌀**1. Always-On Deployment**
 * File: alwayson-deployment.yaml
-* Image: ghcr.io/neptunehub/jellyfin-smart-music:latest-alwayson
+* Image: **ghcr.io/neptunehub/jellyfin-smart-music:latest-alwayson**
 * Runs continuously in the background
 * Best for manual, interactive, or dev-focused workflows
 
 🕒 **2. Scheduled CronJob**
 * File: cronjob-deployment.yaml
-* Image: ghcr.io/neptunehub/jellyfin-smart-music:latest-cronjob
+* Image: **ghcr.io/neptunehub/jellyfin-smart-music:latest-cronjob**
 * Runs once daily at 23:00 (11 PM) or edit the cronjob manifest for different timing
 * Ideal for unattended playlist regeneration
 
