@@ -23,18 +23,18 @@ data:
     MAX_DISTANCE = 0.5
     MAX_SONGS_PER_CLUSTER = 40
     MAX_SONGS_PER_ARTIST = 3
-    NUM_RECENT_ALBUMS = 1
+    NUM_RECENT_ALBUMS = 1300
 
     # Algorithm chose constant
     CLUSTER_ALGORITHM = "kmeans"  # accepted dbscan or kmeans
     PCA_ENABLED = False  # Set False to disable PCA usage.
 
     # dbscan only constant
-    DBSCAN_EPS = 0.04
+    DBSCAN_EPS = 0.15
     DBSCAN_MIN_SAMPLES = 10
 
     # kmeans only constant
-    NUM_CLUSTERS = 0  # if 0 it automatically defined
+    NUM_CLUSTERS = 10  # if 0 it automatically defined
 
     # Classifier constant
     MOOD_LABELS = [
